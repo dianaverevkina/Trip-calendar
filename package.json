@@ -29,7 +29,6 @@
     "jest-puppeteer": "^9.0.0",
     "jsdom": "^22.1.0",
     "mini-css-extract-plugin": "^2.7.6",
-    "moment": "^2.29.4",
     "puppeteer": "^21.3.8",
     "sass": "^1.68.0",
     "sass-loader": "^13.3.2",
@@ -39,6 +38,7 @@
     "webpack-merge": "^5.9.0"
   },
   "dependencies": {
-    "core-js": "^3.32.2"
+    "core-js": "^3.32.2",
+    "moment": "^2.29.4"
   }
 }
