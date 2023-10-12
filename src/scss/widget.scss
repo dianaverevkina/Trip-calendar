@@ -1,0 +1,267 @@
+@import './fonts.scss';
+@import './nullstyle.scss';
+
+$ff: 'Roboto', sans-serif;
+$fs: 1rem;
+$fw: 500;
+$grey: #96a3ae;
+$darkGrey:  rgb(112, 127, 141);
+$black: #000;
+$white: #fff;
+$darkBlue: #00307a;
+$yellow: #ffb524;
+
+@mixin flexCenter ($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+@mixin flexSpace ($direction) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  font-family: $ff;
+  font-size: $fs;
+  font-weight: $fw;
+  color: $black;
+}
+
+.wrapper {
+  min-height: 100%;
+  max-width: 1200px;
+  padding: 3rem 1.25rem;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.widget {
+  max-width: 800px;
+  background-color: #00307a;
+  // .widget__container
+  &__container {
+    padding: 30px 30px 55px;
+  }
+}
+.form {
+  // .form__header
+  &__header {
+    font-size: 1.5rem;
+    color: $white;
+    margin: 0 0 24px;
+  }
+  // .form__container
+  &__container{
+    @include flexSpace(row);
+  }
+  //.form__block
+  &__block {
+    position: relative;
+    max-width: 170px;
+  }
+  // .form__datepicker
+  &__datepicker {
+    cursor: pointer;
+  }
+  // .form__input
+  &__input {
+    width: 100%;
+    font-size: inherit;
+    padding: 1.04rem 1rem;
+    cursor: pointer;
+    &::placeholder{
+      font-size: 1rem;
+      color: $grey;
+    }
+  }
+}
+.depature {
+  position: relative;
+  // .depature__btn-calendar
+  &__btn-calendar {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: block;
+    width: 20px;
+    height: 20px;
+    & img {
+      max-width: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+    }
+  }
+}
+.return {
+  // .return__btn-add
+  &__btn-add {
+    font-size: inherit;
+    color: $darkGrey;
+    width: 170px;
+    background-color: $white;
+    @include flexSpace(row);
+    gap: 0.375rem;
+    padding: 0.8rem 1.8rem;
+    border-radius: 5px;
+    transition: box-shadow 0.2s;
+    &:hover {
+      box-shadow: inset 0px 0px 4px rgba(0,0,0, 1);
+      transition: box-shadow 0.2s;
+    }
+    &_hidden {
+      display: none;
+    }
+  }
+  // .return__btn-icon
+  &__btn-icon {
+    display: block;
+    width: 25px;
+    height: 25px;
+    & img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+  }
+  // .return__container
+  &__container {
+    position: relative;
+  }
+  // .return__btn-delete
+  &__btn-delete {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: block;
+    width: 15px;
+    height: 15px;
+    & img {
+      max-width: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+    }
+  }
+}
+.btn-submit {
+  color: $white;
+  font-size: 1rem;;
+  background: linear-gradient(to bottom, #ffb524 0%, #f7ba00 100%);
+  box-shadow: 0.14rem 0.14rem 0.35rem 0 rgba($black, 0.2);
+  cursor: pointer;
+  padding: 1.04rem 2.3rem;
+  border: 1px solid transparent;
+  border-radius: 2.8rem;
+  transition: all 0.3s;
+  &:hover {
+    background: linear-gradient(to bottom, #ffc700 0%, #ffc800 100%);
+    box-shadow: 0.14rem 0.14rem 0.71rem 0 rgba(255, 253, 237, 0.25);
+    transition: all 0.3s;
+  }
+}
+
+.calendar {
+  &_hidden {
+    display: none;
+  }
+  // .calendar__container
+  &__container {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    transform: translateY(100%);
+    max-width: 300px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background-color: $white;
+    margin-top: 10px;
+    z-index: 999;
+  }
+  // .calendar__header
+  &__header {
+    @include flexSpace(row);
+    gap: 0.5rem;
+    padding: 10px 1rem 0;
+    margin: 0 0 1rem;
+  }
+  //.calendar__arrow
+  &__arrow {
+    width: 16px;
+    height: 20px;
+    cursor: pointer;
+  }
+  // .calendar__arrow-left
+  &__arrow-left {
+  }
+  //.calendar__arrow-icon
+  &__arrow-icon {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  // .calendar__title
+  &__title {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  // .calendar__arrow-right
+  &__arrow-right {
+  }
+  // .calendar__weekdays
+  &__weekdays {
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin: 0 0 0.5rem;
+  }
+  // .calendar__day
+  &__day {
+    place-self: center;
+  }
+  // .calendar__dates
+  &__dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: 1px solid #ccc;
+  }
+  // .calendar__cell
+  &__cell {
+  }
+}
+.cell {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  cursor: pointer;
+  place-self: center;
+  &_current {
+    outline: 1px solid $yellow;
+    border-radius: 50%;
+  }
+  &_forbidden {
+    opacity: 0.3;
+    cursor: default;
+  }
+  &_middle{
+    background-color: rgba($darkBlue, 0.1);
+  }
+  &_selected-depature {
+    background-color: rgba($darkBlue, 0.6);
+    border-radius: 50%;
+  }
+  &_selected-return {
+    background-color: rgba($darkBlue, 0.3);
+    border-radius: 50%;
+  }
+}
+
+
+
