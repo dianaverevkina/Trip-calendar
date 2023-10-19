@@ -12,9 +12,9 @@ export default class App {
           <div class="form__block">
             <label class="form__datepicker depature">
               <input readonly="" name="depature-date" class="form__input depature__input" placeholder="Туда">
-              <buttont type="button" class="depature__btn-calendar">
+              <button type="button" class="depature__btn-calendar">
                 <img src="./images/calendar.jpg" alt="">
-              </buttont>
+              </button>
             </label>
           </div>
           <div class="form__block">
