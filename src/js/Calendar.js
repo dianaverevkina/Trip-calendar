@@ -64,7 +64,7 @@ export default class Calendar {
     const block = target.closest('.form__block');
     const input = block.querySelector('.form__input');
     const day = +target.textContent;
-    const fulldate = target.getAttribute('data-fulldate');
+    const fulldate = target.getAttribute('data-fullDate');
 
     if (moment(fulldate).isBefore(this.currentDate)) return;
 
