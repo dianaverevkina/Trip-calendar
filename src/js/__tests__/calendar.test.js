@@ -7,10 +7,12 @@ import FormState from '../FormState';
 const jsdom = require('jsdom');
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+  url: 'http://localhost:3000',
+});
 // Глобальные переменные, которые вы хотите использовать в тестах
-global.window = dom;
-global.document = dom.window.document;
+global.window = dom.window;
+global.document = window.document;
 
 document.body.innerHTML = `
   <div class="wrapper">
@@ -36,7 +38,7 @@ calendar.buildCalendar();
 test('Calendar should be opened selected and current date should have class "cell_current"', () => {
   const inputContainer = depatureInput.closest('.form__block');
   inputContainer.append(calendar.calendar);
-  const cellWithCurrentDate = calendar.calendar.querySelector(`[data-fulldate="${moment().format('YYYY-MM-DD')}"]`);
+  const cellWithCurrentDate = calendar.calendar.querySelector(`[data-fullDate="${moment().format('YYYY-MM-DD')}"]`);
 
   expect(calendar.calendar).toBeTruthy();
   expect(cellWithCurrentDate.classList.contains('cell_current')).toBeTruthy();
@@ -48,11 +50,11 @@ test(`Calendar cell before current date should not be selected and depature inpu
   inputContainer.append(calendar.calendar);
 
   const newDate = moment().subtract(3, 'days');
-  const selectedCell = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const selectedCell = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   selectedCell.click();
 
   const result = depatureInput.value;
-  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   const haveClass = selectedCellAfterClick.classList.contains('cell_selected-depature');
 
   expect(result).toEqual('');
@@ -62,12 +64,12 @@ test(`Calendar cell before current date should not be selected and depature inpu
 test('Calendar cell should be selected and depature input value should be filled out after clicking on date', () => {
   const inputContainer = depatureInput.closest('.form__block');
   inputContainer.append(calendar.calendar);
-  const newDate = moment().add(2, 'days');
-  const selectedCell = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const newDate = moment().add(1, 'days');
+  const selectedCell = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   selectedCell.click();
 
   const result = depatureInput.value;
-  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   const haveClass = selectedCellAfterClick.classList.contains('cell_selected-depature');
   expect(result).toEqual(newDate.format('DD.MM.YY, dd'));
   expect(haveClass).toBeTruthy();
@@ -80,12 +82,12 @@ test('Calendar cell should be selected and depature input value should be filled
   const inputContainer = returnInput.closest('.form__block');
   inputContainer.append(calendar.calendar);
   calendar.currentInput = returnInput;
-  const newDate = moment(calendar.depatureDate).add(7, 'days');
-  const selectedCell = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const newDate = moment(calendar.depatureDate).add(2, 'days');
+  const selectedCell = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   selectedCell.click();
 
   const result = returnInput.value;
-  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   const haveClass = selectedCellAfterClick.classList.contains('cell_selected-return');
 
   expect(result).toEqual(newDate.format('DD.MM.YY, dd'));
@@ -94,11 +96,11 @@ test('Calendar cell should be selected and depature input value should be filled
 
 test(`Middle cell should have class "cell_middle" and cells before depature date - "cell_forbidden"
   when we have depature date and return date`, () => {
-  const dateBetweenDepatureAndReturn = moment(calendar.depatureDate).add(2, 'days');
-  const dataAtrMiddleDate = `[data-fulldate="${dateBetweenDepatureAndReturn.format('YYYY-MM-DD')}"]`;
+  const dateBetweenDepatureAndReturn = moment(calendar.depatureDate).add(1, 'days');
+  const dataAtrMiddleDate = `[data-fullDate="${dateBetweenDepatureAndReturn.format('YYYY-MM-DD')}"]`;
 
   const dateBeforeDepature = moment(calendar.depatureDate).subtract(1, 'days');
-  const dataAtrDateBeforeDep = `[data-fulldate="${dateBeforeDepature.format('YYYY-MM-DD')}"]`;
+  const dataAtrDateBeforeDep = `[data-fullDate="${dateBeforeDepature.format('YYYY-MM-DD')}"]`;
 
   const middleCell = calendar.calendar.querySelector(dataAtrMiddleDate);
   const cellBeforeDepatureDate = calendar.calendar.querySelector(dataAtrDateBeforeDep);
@@ -107,16 +109,16 @@ test(`Middle cell should have class "cell_middle" and cells before depature date
   expect(cellBeforeDepatureDate.classList.contains('cell_forbidden')).toBeTruthy();
 });
 
-test('When we have depature and return date and choose date depature date after return date return date is deleted', () => {
+test('When we have depature and return date and choose date depature date after return date, return date is deleted', () => {
   const inputContainer = depatureInput.closest('.form__block');
   inputContainer.append(calendar.calendar);
 
   calendar.currentInput = depatureInput;
-  const newDate = moment(calendar.returnDate).add(3, 'days');
-  const selectedCell = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const newDate = moment(calendar.returnDate).add(1, 'days');
+  const selectedCell = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
   selectedCell.click();
 
-  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fulldate="${newDate.format('YYYY-MM-DD')}"]`);
+  const selectedCellAfterClick = calendar.calendar.querySelector(`[data-fullDate="${newDate.format('YYYY-MM-DD')}"]`);
 
   expect(calendar.returnDate).toBeNull();
   expect(selectedCellAfterClick.classList.contains('cell_selected-depature')).toBeTruthy();

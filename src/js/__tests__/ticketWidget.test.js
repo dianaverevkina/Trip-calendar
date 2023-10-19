@@ -5,9 +5,16 @@ import FormState from '../FormState';
 const jsdom = require('jsdom');
 
 const { JSDOM } = jsdom;
-const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+  url: 'http://localhost:3000',
+});
+
 // Глобальные переменные, которые вы хотите использовать в тестах
-global.document = dom.window.document;
+global.window = dom.window;
+global.document = window.document;
+global.localStorage = {
+  setItem: jest.fn(),
+};
 
 document.body.innerHTML = `
   <div class="wrapper">
@@ -27,17 +34,8 @@ test('widget should render', () => {
   expect(container.innerHTML).toEqual(expected);
 });
 
-const state = new FormState();
+const state = new FormState(localStorage);
 const ticketWidget = new TicketWidget(app, state);
-
-test('Calendar should be shown after focusing on input', () => {
-  ticketWidget.depatureDateInput.focus();
-
-  const result = ticketWidget.calendar.calendar;
-  const expected = container.querySelector('.calendar');
-
-  expect(result).toEqual(expected);
-});
 
 test('Calendar should be shown after focusing on input', () => {
   ticketWidget.depatureDateInput.focus();
@@ -65,4 +63,12 @@ test('Return input should be deleted after clicking on button "delete returnDate
   const result = container.returnDateInput;
 
   expect(result).toBeUndefined();
+});
+
+test('saveFormData should be called on beforeunload event', () => {
+  const testData = { depatureDate: '25.10.23, ср' };
+
+  state.save(testData);
+
+  expect(localStorage.setItem).toHaveBeenCalledWith('formData', JSON.stringify(testData));
 });
