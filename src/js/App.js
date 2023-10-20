@@ -10,7 +10,7 @@ export default class App {
 
         <div class="form__container">
           <div class="form__block">
-            <label class="form__datepicker depature">
+            <label class="form__datepicker datepicker depature">
               <input readonly="" name="depature-date" class="form__input depature__input" placeholder="Туда">
               <button type="button" class="depature__btn-calendar">
                 <img src="./images/calendar.jpg" alt="">
@@ -74,7 +74,7 @@ export default class App {
 
   drawReturnInput() {
     const returnContainer = document.createElement('div');
-    returnContainer.classList.add('return__container');
+    returnContainer.classList.add('return__container', 'datepicker');
     returnContainer.innerHTML = `
       <input readonly name="return-date" class="form__input return__input" placeholder="Обратно">
       <button type="button" class="return__btn-delete">

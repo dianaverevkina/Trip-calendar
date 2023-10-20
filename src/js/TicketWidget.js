@@ -24,8 +24,17 @@ export default class TicketWidget {
       this.addReturnDate(currentTarget);
     });
 
-    // window.addEventListener('beforeunload', () => this.saveFormData());
+    window.addEventListener('beforeunload', () => this.saveFormData());
     document.addEventListener('DOMContentLoaded', () => this.loadFormData());
+    document.addEventListener('click', (e) => this.closeCalendar(e));
+  }
+
+  // Если клик по инпуту с выбором дат или календарю, выход. Иначе закрываем календарь
+  closeCalendar(e) {
+    if (!this.calendar.calendar) return;
+    if (e.target.closest('.calendar') || e.target.closest('.datepicker')) return;
+
+    this.calendar.hideCalendar();
   }
 
   showCalendar(e) {

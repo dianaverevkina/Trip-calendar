@@ -58,7 +58,6 @@ export default class Calendar {
   chooseDate(e) {
     e.preventDefault();
     const { target } = e;
-
     if (target.classList.contains('calendar__dates')) return;
 
     const block = target.closest('.form__block');
@@ -86,6 +85,7 @@ export default class Calendar {
 
     input.value = this.now.date(day).format('DD.MM.YY, dd');
     this.buildCalendar();
+    e.stopPropagation();
   }
 
   // При клике по стрелке перелистываем календарь и обновляем дни
@@ -169,13 +169,10 @@ export default class Calendar {
   removeReturnDate() {
     this.hideCalendar();
     this.returnDay = null;
-    this.days = this.datesContainer.querySelectorAll('.cell__selected-return');
-    this.days.forEach((day) => day.classList.remove('cell__selected-return'));
     this.returnDate = null;
   }
 
-  // Скрыть календарь
   hideCalendar() {
-    this.calendar.classList.add('calendar_hidden');
+    this.calendar.remove();
   }
 }
